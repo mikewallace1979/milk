@@ -62,6 +62,10 @@ __COWS = [
 __ERROR = 'I\'m sorry, what?\n'
 
 def get_cow(message, verb='say', cowfile='default'):
+    if not verb in __EXE:
+        raise('Unsupported action')
+    if not cowfile in __COWS:
+        raise('Unsupported cow')
     p = subprocess.Popen([__EXE[verb], '-f', cowfile, message],
         shell=False, stdout=subprocess.PIPE)
     return p.communicate()[0]
@@ -70,12 +74,11 @@ app = Flask(__name__)
 
 @app.route('/cow/<verb>', methods=['GET'])
 def respond(verb='say'):
-    if verb in __EXE:
+    try:
         message = request.args.get('message', '')
         cowfile = request.args.get('cowfile', 'default')
-        if cowfile in __COWS:
-            return get_cow(message, verb, cowfile)
-    else:
+        return get_cow(message, verb, cowfile)
+    except:
         return __ERROR
 
 if __name__ == '__main__':
