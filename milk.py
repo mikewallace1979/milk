@@ -9,7 +9,7 @@ __EXE = {
     'think': 'cowthink'
 }
 
-__ERROR = 'I\'m sorry, what?'
+__ERROR = 'I\'m sorry, what?\n'
 
 def get_cow(message, verb):
     p = subprocess.Popen([__EXE[verb], message],
@@ -18,21 +18,11 @@ def get_cow(message, verb):
 
 app = Flask(__name__)
 
-@app.route('/cow/say', methods=['GET'])
-def say():
-    if request.method == 'GET':
+@app.route('/cow/<verb>', methods=['GET'])
+def respond(verb='say'):
+    if verb in __EXE:
         message = request.args.get('message', '')
-        cow = get_cow(message, 'say')
-        return cow
-    else:
-        return __ERROR
-
-@app.route('/cow/think', methods=['GET'])
-def think():
-    if request.method == 'GET':
-        message = request.args.get('message', '')
-        cow = get_cow(message, 'think')
-        return cow
+        return get_cow(message, verb)
     else:
         return __ERROR
 
