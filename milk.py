@@ -4,6 +4,8 @@ import subprocess
 
 from flask import Flask, request
 
+__DEFAULT_MESSAGE = 'moo'
+
 __EXE = {
     'say': 'cowsay',
     'think': 'cowthink'
@@ -75,7 +77,9 @@ app = Flask(__name__)
 @app.route('/cow/<verb>', methods=['GET'])
 def cow(verb='say'):
     try:
-        message = request.args.get('message', '')
+        message = request.args.get('message', __DEFAULT_MESSAGE)
+        if len(message) == 0:
+            message = __DEFAULT_MESSAGE
         cowfile = request.args.get('cowfile', 'default')
         return get_cow(message, verb, cowfile)
     except:
