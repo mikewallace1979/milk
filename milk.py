@@ -81,5 +81,9 @@ def respond(verb='say'):
     except:
         return __ERROR
 
+@app.route('/cows', methods=['GET'])
+def list_cows():
+    return '%s\n' % '\n'.join(__COWS)
+
 if __name__ == '__main__':
     app.run()
