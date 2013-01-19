@@ -9,10 +9,60 @@ __EXE = {
     'think': 'cowthink'
 }
 
+__COWS = [
+    'beavis.zen',
+    'bong',
+    'bud-frogs',
+    'bunny',
+    'cheese',
+    'cower',
+    'daemon',
+    'default',
+    'dragon-and-cow',
+    'dragon',
+    'elephant-in-snake',
+    'elephant',
+    'eyes',
+    'flaming-sheep',
+    'ghostbusters',
+    'head-in',
+    'hellokitty',
+    'kiss',
+    'kitty',
+    'koala',
+    'kosh',
+    'luke-koala',
+    'mech-and',
+    'meow',
+    'milk',
+    'moofasa',
+    'moose',
+    'mutilated',
+    'ren',
+    'satanic',
+    'sheep',
+    'skeleton',
+    'small',
+    'sodomized',
+    'stegosaurus',
+    'stimpy',
+    'supermilker',
+    'surgery',
+    'telebears',
+    'three-eyes',
+    'turkey',
+    'turtle',
+    'tux',
+    'udder',
+    'vader-koala',
+    'vader',
+    'www'
+]
+
 __ERROR = 'I\'m sorry, what?\n'
 
-def get_cow(message, verb):
-    p = subprocess.Popen([__EXE[verb], message],
+def get_cow(message, verb='say', cowfile='default'):
+    p = subprocess.Popen([__EXE[verb], '-f', cowfile, message],
         shell=False, stdout=subprocess.PIPE)
     return p.communicate()[0]
 
@@ -22,9 +72,11 @@ app = Flask(__name__)
 def respond(verb='say'):
     if verb in __EXE:
         message = request.args.get('message', '')
-        return get_cow(message, verb)
+        cowfile = request.args.get('cowfile', 'default')
+        if cowfile in __COWS:
+            return get_cow(message, verb, cowfile)
     else:
         return __ERROR
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

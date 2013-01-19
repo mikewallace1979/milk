@@ -24,9 +24,3 @@ Launch a Flask with all the defaults:
 Then curl away:
 
     curl -X GET http://localhost:5000/cow/say?message=moo
-
-future
-------
-
- - Support for cowthink
- - Support for different types of cow.
