@@ -12,7 +12,7 @@ def get_cow(message):
 app = Flask(__name__)
 
 @app.route('/cow/say', methods=['GET'])
-def hello():
+def say():
     if request.method == 'GET':
         message = request.args.get('message', '')
         cow = get_cow(message)
