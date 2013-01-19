@@ -4,8 +4,15 @@ import subprocess
 
 from flask import Flask, request
 
-def get_cow(message):
-    p = subprocess.Popen(['cowsay', message],
+__EXE = {
+    'say': 'cowsay',
+    'think': 'cowthink'
+}
+
+__ERROR = 'I\'m sorry, what?'
+
+def get_cow(message, verb):
+    p = subprocess.Popen([__EXE[verb], message],
         shell=False, stdout=subprocess.PIPE)
     return p.communicate()[0]
 
@@ -15,8 +22,19 @@ app = Flask(__name__)
 def say():
     if request.method == 'GET':
         message = request.args.get('message', '')
-        cow = get_cow(message)
+        cow = get_cow(message, 'say')
         return cow
+    else:
+        return __ERROR
+
+@app.route('/cow/think', methods=['GET'])
+def think():
+    if request.method == 'GET':
+        message = request.args.get('message', '')
+        cow = get_cow(message, 'think')
+        return cow
+    else:
+        return __ERROR
 
 if __name__ == "__main__":
     app.run()
