@@ -73,7 +73,7 @@ def get_cow(message, verb='say', cowfile='default'):
 app = Flask(__name__)
 
 @app.route('/cow/<verb>', methods=['GET'])
-def respond(verb='say'):
+def cow(verb='say'):
     try:
         message = request.args.get('message', '')
         cowfile = request.args.get('cowfile', 'default')
